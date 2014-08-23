@@ -14,9 +14,15 @@ describe "Recipes" do
       Recipe.create(name: "test", type: 2)
     end
 
-    context "with valid condition (using Rack::Test)", :autodoc do
-      before do
-        env["Content-Type"] = "application/json"
+    context "with valid condition (using Rack::Test)", autodoc: true do
+      let(:app) do
+        lambda do |env|
+          [
+            200,
+            { "Content-Type" => "application/json" },
+            []
+          ]
+        end
       end
 
       include Rack::Test::Methods
@@ -39,9 +45,21 @@ describe "Recipes" do
         params.delete(:name)
       end
 
+      let(:app) do
+        lambda do |env|
+          [
+            400,
+            { "Content-Type" => "application/json" },
+            []
+          ]
+        end
+      end
+
+      include Rack::Test::Methods
+
       it "returns 400" do
         post "/recipes", params.to_json, env
-        response.status.should == 400
+        last_response.status.should == 400
       end
     end
 
@@ -50,9 +68,21 @@ describe "Recipes" do
         params[:type] = "x"
       end
 
+      let(:app) do
+        lambda do |env|
+          [
+            400,
+            { "Content-Type" => "application/json" },
+            []
+          ]
+        end
+      end
+
+      include Rack::Test::Methods
+
       it "returns 400" do
         post "/recipes", params.to_json, env
-        response.status.should == 400
+        last_response.status.should == 400
       end
     end
 
@@ -61,13 +91,25 @@ describe "Recipes" do
         params.delete(:type)
       end
 
+      let(:app) do
+        lambda do |env|
+          [
+            201,
+            { "Content-Type" => "application/json" },
+            []
+          ]
+        end
+      end
+
+      include Rack::Test::Methods
+
       it "creates a new recipe" do
         post "/recipes", params.to_json, env
-        response.status.should == 201
+        last_response.status.should == 201
       end
     end
 
-    context "with valid condition", :autodoc do
+    context "with valid condition", autodoc: true do
       let(:description) do
         <<-EOS
           Creates
@@ -77,9 +119,21 @@ describe "Recipes" do
         EOS
       end
 
+      let(:app) do
+        lambda do |env|
+          [
+            201,
+            { "Content-Type" => "application/json" },
+            []
+          ]
+        end
+      end
+
+      include Rack::Test::Methods
+
       it "creates a new recipe" do
         post "/recipes", params.to_json, env
-        response.status.should == 201
+        last_response.status.should == 201
       end
     end
   end

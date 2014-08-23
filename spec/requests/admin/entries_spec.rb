@@ -29,7 +29,7 @@ describe "Admin::Entries" do
   end
 
   describe "GET /admin/entries" do
-    context "with Rack::Test", :autodoc do
+    context "with Rack::Test", autodoc: true do
       it "returns entries" do
         get "/admin/entries", params, env
         last_response.status.should == 200
