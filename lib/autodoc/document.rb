@@ -32,7 +32,7 @@ module Autodoc
     end
 
     def identifier
-      title.gsub(" ", "-").gsub(/[:\/]/, "").downcase
+      title.gsub(" ", "-").gsub("/", "-").gsub(/[:\/]/, "").gsub(/\-+/, '-').downcase
     end
 
     private
