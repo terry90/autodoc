@@ -5,6 +5,6 @@
 * [<%= relative_path %>](<%= relative_path %>)
 <% documents.group_by(&:title).each do |title, documents| -%>
 <% document = documents[0] -%>
-<%= "* [#{title}](#{relative_path}##{document.identifier})" %>
+<%= " * [#{title}](#{relative_path}##{document.identifier})" %>
 <% end -%>
 <% end -%>
